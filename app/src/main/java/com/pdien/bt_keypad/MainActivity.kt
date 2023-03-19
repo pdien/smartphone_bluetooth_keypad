@@ -33,7 +33,7 @@ val myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
 @SuppressLint("MissingPermission")
 open class MainActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var btStateRequestLauncher: ActivityResultLauncher<Intent>
-    lateinit var btSocket: BluetoothSocket
+    private lateinit var btSocket: BluetoothSocket
     private val deviceList = ArrayList<BtItem>()
     private lateinit var customAdapter: CustomAdapter
 
@@ -154,6 +154,7 @@ open class MainActivity : AppCompatActivity(), OnItemClickListener {
             btSocket.connect()
             Toast.makeText(this@MainActivity, "Connection Successful", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, InputActivity::class.java)
+            intent.putExtra("btdevice", mDevice)
             startActivity(intent)
         } catch (e2: IOException) {
             try {
