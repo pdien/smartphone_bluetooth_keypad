@@ -6,30 +6,37 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item.view.*
+import com.pdien.bt_keypad.databinding.ActivityMainBinding
+import com.pdien.bt_keypad.databinding.ActivityItemsBinding
+
+//import kotlinx.android.synthetic.main.item.view.*
 
 class CustomAdapter(private val itemsList: List<BtItem>,
                     private val listener: OnItemClickListener) : RecyclerView.Adapter<CustomAdapter.MyViewHolder>() {
+
+    private lateinit var binding: ActivityItemsBinding
+
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return MyViewHolder(itemView)
+        binding = ActivityItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val currentItem = itemsList[position]
-        holder.textView1.text = currentItem.name
-        holder.textView2.text = currentItem.mac
+        val currentItem: BtItem = itemsList[position]
+        holder.bind(currentItem)
     }
 
     override fun getItemCount(): Int {
         return itemsList.size
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    inner class MyViewHolder(private val itemBinding: ActivityItemsBinding) : RecyclerView.ViewHolder(itemBinding.root),
     View.OnClickListener{
-        val textView1: TextView = itemView.itemTextView
-        val textView2: TextView = itemView.itemTextView2
+        fun bind(currentItem: BtItem) {
+            itemBinding.itemTextView.text = currentItem.name
+            itemBinding.itemTextView2.text = currentItem.mac
+        }
 
         init {
             itemView.setOnClickListener(this)
